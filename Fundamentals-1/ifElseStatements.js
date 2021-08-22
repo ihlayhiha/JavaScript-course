@@ -64,3 +64,20 @@ console.log('23' > '2');            // same, converts string to int if possible
 let n = '1' + 1;
 n = n - 1;
 console.log(n); // 10
+
+// alert("What do your say!");
+// let favorite = Number(prompt("what's your fav number?"));
+
+// while (true){
+//     if (isNaN(favorite)){
+//         favorite = prompt("Wrong input. I asked for your favorite NUMBER!!!. Try again")
+//     } else {
+//         break;
+//     }
+// }
+// console.log(favorite);
+// console.log(isNaN(favorite));
+
+
+
+// Challenge
