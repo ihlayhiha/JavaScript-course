@@ -89,7 +89,12 @@ console.log(typeof constant);
 
 
 // var is  an old way to declare variables before 2006 but it's a bit different to using 'let'
+// let is block scoped and var is function scoped
 var randInt = 20;
 console.log(randInt);
 randInt = "yella";
 console.log(randInt);
+
+// we don't even need to declare variables most times
+randExample = "This is a random example";
+// but this is a bad idea. JS creates a property on the global object instead of creating a variable on the local scope 
