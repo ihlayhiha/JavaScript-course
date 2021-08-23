@@ -180,3 +180,8 @@ class Child  extends Parent{
 let child = new Child()
 console.log(child instanceof Child);
 console.log(child instanceof Parent);
+
+// const instance = 10;
+// let name = "MyName";
+// if (true) nmed = "This is my new name";
+// console.log(name);
