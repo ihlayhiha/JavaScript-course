@@ -169,3 +169,14 @@ finally{
 
 randCheck = new String();
 console.log(randCheck instanceof String);
+
+
+class Parent{
+}
+class Child  extends Parent{
+
+}
+
+let child = new Child()
+console.log(child instanceof Child);
+console.log(child instanceof Parent);
