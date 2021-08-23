@@ -1,4 +1,6 @@
 'use strict';
+
+// Arrays are also objects. 
 // const yellaArray = [
 //     "Ravi Teja",
 //     "Yella",
@@ -76,7 +78,7 @@ const me = {
     birthYear : 1995,
     occupation : "Teacher",
     friends : ["Whatever", "this", "is"],
-    hasDriversLicence : true,
+    hasDriversLicence : false,
 
     // calcAge : function (birthYear) {
     //     return 2021 - birthYear
@@ -99,7 +101,7 @@ const me = {
     // },
 
     getSummary : function(){
-        this.summary = `${this.firstName} ${this.lastName} is a ${this.age}yr old ${this.occupation}. He ${this.hasDriversLicence? "has": "doesn't have"} a driving licence`
+        this.summary = `${this.firstName} ${this.lastName} is a ${this.calcAge()}yr old ${this.occupation}. He ${this.hasDriversLicence? "has": "doesn't have"} a driving licence`
         // console.log(summary);
     }
 
@@ -122,5 +124,45 @@ console.log(me.age);
 console.log(me.summary);
 console.log(me);
 
+// Arrays are also objects, just that they're predefined and so we call the built in methods instead of what we did with the objects here like 'yella' and 'me where we wrote  our own methods
 // ------------------------------------------------------------------------------->
-// Object methods
+// Coding challenge
+console.log("----------------------------------------------------------------");
+
+const applyBMI = function (name, height, mass){
+    const sample = {
+        name : name,
+        height : height,
+        mass : mass,
+
+        calcBMI : function (){
+            this.bmi = this.mass/this.height**2;
+            return this.bmi;
+        }
+    };
+    return sample;
+}
+
+let mark = applyBMI("Mark Miller", 1.69, 78);
+let john = applyBMI("John Smith", 1.95, 92);
+
+// initializing
+mark.calcBMI();
+john.calcBMI();
+
+let compareBMI = {
+    compare : function(){
+        if (mark.bmi > john.bmi){
+            this.big = mark;
+            this.small = john;
+        } else {
+            this.big = john;
+            this.small = mark;
+        }
+    }
+}
+// initializing
+compareBMI.compare();
+
+let printable = `${compareBMI.big.name}'s BMI(${compareBMI.big.bmi}) is bigger than ${compareBMI.small.name}'s BMI(${compareBMI.small.bmi})`;
+console.log(printable);  
