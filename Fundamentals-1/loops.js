@@ -127,3 +127,8 @@ randArray.forEach(function (element){
 console.log(randArray);
 console.log(anotherArray);
 
+
+randArray.forEach((item) => {
+    console.log(item);
+    // return 10;
+})
