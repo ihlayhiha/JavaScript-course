@@ -81,4 +81,4 @@ const [i, j, k, l, m, n, o, p] = nested;
 console.log(i, j, k, l, m, n, o, p);    // all values that don't exist are defaulted to undefined
 // we can set default values to avoid being undefined if we want to
 const [aa="yeah", bb="yeah", cc="yeah", dd="yeah", ee="yeah", f="yeah"] = nested;
-console.log(aa, bb,  cc, dd, ee, f,);
+console.log(aa, bb,  cc, dd, ee, f);
