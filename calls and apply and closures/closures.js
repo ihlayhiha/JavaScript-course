@@ -62,3 +62,46 @@ console.dir(f);
 h();
 f();    // now f changes to function created during the execution context of 'h', so the variables it's closures stores are ('b' = 333)
 console.dir(f);
+
+
+// example 2, using Timer
+
+const boardPassengers = function(n, wait){
+    const perGroup = n/3;
+
+    setTimeout(function(){
+        console.log(`We are now boarding all ${n} passengers`);
+        console.log("There are 3 groups, each with", perGroup, "passenger");
+    }, wait* 1000)  // function to be executed and the time, the function executed after 1000 milliseconds (1 second)
+
+    console.log("We will start boarding in", wait, "seconds");  // this will not wait till the timeout function finishes. This logs out immediately
+};
+
+boardPassengers(180, 3);
+
+// using timer example
+setTimeout(() => {
+    console.log("This will appear after 1 second")
+}, 1000);
+
+// the only way the timeout function can delay the output is possible only because the closure can store execution context variables till the timeout finishes even after the 'boardPassengers' function is long gone.
+
+// closure coding challenge
+
+// let blueHeader;
+(function(){
+    const header = document.querySelector('h1');
+    header.style.color = "red";
+
+    document.querySelector('body').addEventListener('click', function(){
+        header.style.color = "blue";
+    });     // by the time we click, this one time function will be long gone but the eventListener's closure will still contain the variables here and use them
+    
+
+    // blueHeader = () =>{
+    //     header.style.color = "blue";
+    // };
+
+})();
+
+// document.querySelector('body').addEventListener('click', blueHeader);
