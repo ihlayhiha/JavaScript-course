@@ -71,18 +71,21 @@ accounts.forEach(account => {
 
 // creating movements for account1 and replacing the pre-coded default html
 // removing the pre-coded default html
-containerMovements.innerHTML = "";  // to remove default coded html
 
 // creating a function to display movements
-const displayMovements = function(movements){
-  movements.forEach((mov, i) => {
+const displayMovements = function(movements, sort=false){
+  containerMovements.innerHTML = "";  // to remove default coded html
+
+  const movs = sort? movements.slice().sort((a, b) => a - b) : movements; // we do not want to change the original array. So, create a copy with .slice()
+
+  movs.forEach((mov, i) => {
 
     const type = mov > 0? "deposit" : "withdrawal";
 
     const html = `
     <div class="movements__row">
           <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-          <div class="movements__value">${mov} €</div>
+          <div class="movements__value">${mov}€</div>
         </div>
     `;
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -231,6 +234,18 @@ btnClose.addEventListener('click', function (e) {
 });
 
 
+let checkSort = true;
+// Event handler for Sorting movements
+btnSort.addEventListener('click', function(e){
+  e.preventDefault();
+
+  displayMovements(currentAccount.movements, checkSort);
+  checkSort = !checkSort;
+});
+
+
+
+
 /////////////////////////////////////////////////
 // LECTURES
 
@@ -268,16 +283,29 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 
 // using .flat()  method to calculate the overall movement of all the accounts in the bank
-const allMovements = accounts
-    .map(acc => acc.movements)
-    .flat()
-    .reduce((acc, mov) => acc + mov, 0);
-console.log(`Total movement of all accounts: ${allMovements}`);
+// const allMovements = accounts
+//     .map(acc => acc.movements)
+//     .flat()
+//     .reduce((acc, mov) => acc + mov, 0);
+// console.log(`Total movement of all accounts: ${allMovements}`);
 
 
-// using .flapMap() to combine .flat() and .map() methods
-// .flatMap() method has depth always set to 1
-const totalMovements = accounts
-    .flatMap(acc => acc.movements)
-    .reduce((acc, mov) => acc + mov, 0);
-console.log(`Total movement of all accounts: ${totalMovements}`); 
+// // using .flapMap() to combine .flat() and .map() methods
+// // .flatMap() method has depth always set to 1
+// const totalMovements = accounts
+//     .flatMap(acc => acc.movements)
+//     .reduce((acc, mov) => acc + mov, 0);
+// console.log(`Total movement of all accounts: ${totalMovements}`); 
+
+
+// more uses of Array.from() function
+// we can produce arrays from array-like iterables such as .querySelectorAll()  nodeLists by using Array.from() function
+
+labelBalance.addEventListener('click', ()=>{
+  const movementsUI = Array.from(document.querySelectorAll('.movements__value'), (element) => Number(element.textContent.replace('€', '')));
+  console.log(movementsUI.reduce((acc, cur) => acc + cur, 0));
+
+  // u can also use the spread method
+  const movementsUI2 = [...document.querySelectorAll('.movements__value')];
+  console.log(movementsUI2.map(element => Number(element.textContent.replace('€', ''))));
+});
