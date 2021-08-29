@@ -82,47 +82,153 @@ const displayMovements = function(movements){
     const html = `
     <div class="movements__row">
           <div class="movements__type movements__type--${type}">${i + 1} ${type}</div>
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov} €</div>
         </div>
     `;
     containerMovements.insertAdjacentHTML('afterbegin', html);
 
   });
-}
-displayMovements(account1.movements); 
+};
 
 
 // creating a function for calculating and displaying balance
-const calcDisplayBalance = function(movements) {
-  const balance = movements.reduce((arr, mov) => arr + mov,  0);
-  labelBalance.textContent = `${balance} €`;
+const calcDisplayBalance = function(acc) {
+  acc.balance = acc.movements.reduce((arr, mov) => arr + mov,  0);
+  labelBalance.textContent = `${acc.balance} €`;
 };
-calcDisplayBalance(account1.movements);
+
 
 
 // creating functions to display total incomes, withdrawals and interests
-const calcDisplaySummary = function(movements){
-  const incomes = movements
+const calcDisplaySummary = function(account){
+  const incomes = account.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumIn.textContent = `${incomes} €`;
 
-  const out = movements
+  const out = account.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
   labelSumOut.textContent = `${Math.abs(out)} €`;
 
-  const interestRate = 0.012;
-  const interest =  movements
+  const interest =  account.movements
     .filter(mov => mov > 0)
-    .map(deposit => deposit * interestRate)
+    .map(deposit => deposit * account.interestRate/100)
     .filter(int => int >= 1)   // if the bank ony adds interest if the interest value is > 1 euro
     .reduce((acc, int) => acc + int, 0);
   labelSumInterest.textContent = `${interest} €`;
 };
-calcDisplaySummary(account1.movements);
 
 
+// updating UI function
+const updateUI = function(acc){
+    // display movements
+    displayMovements(currentAccount.movements); 
+    
+    // display balance
+    calcDisplayBalance(currentAccount);
+    
+    // display summary
+    calcDisplaySummary(currentAccount);
+};
+
+
+
+// Initiating a currentAccount variable
+let currentAccount;
+
+// Event handlers for User login
+// when we click a button in 'form' element, the event listener gets executed and the page always reloads by default 
+btnLogin.addEventListener('click', function(event){
+  event.preventDefault();   // prevents form from submitting (reloading every time a button gets clicked)
+  
+  currentAccount = accounts.find(acc => acc.username === inputLoginUsername.value);
+  
+  if (currentAccount?.pin === Number(inputLoginPin.value)) {
+    
+    // display UI and welcome message
+    labelWelcome.textContent = `Welcome back ${currentAccount.owner.split(" ")[0]}!`;
+    containerApp.style.opacity = 100;
+    
+    // clear the input fields
+    inputLoginUsername.value = inputLoginPin.value = "";
+    
+    // removing focus from input fields after logging in by using .blur() method on the element
+    inputLoginPin.blur(); 
+    
+    // updating UI
+    updateUI(currentAccount);
+  };
+});
+
+
+// Event handlers/listeners for transfers
+btnTransfer.addEventListener('click', function(e){
+  e.preventDefault();   // preventing the default submitting 
+
+  const receiverAcc = accounts.find(acc => acc.username === inputTransferTo.value);
+  const amount = Number(inputTransferAmount.value);
+
+  // clearing input fields
+  inputTransferAmount.value = inputTransferTo.value = "";
+
+  if (
+    amount > 0 &&
+    receiverAcc &&
+    amount <= currentAccount.balance &&
+    receiverAcc.username !== currentAccount.username
+    ){
+
+      // doing the transfer
+      currentAccount.movements.push(-amount);
+      receiverAcc.movements.push(amount);
+
+      // updating UI
+      updateUI(currentAccount);
+    };
+});
+
+
+// Event handler for loan request
+btnLoan.addEventListener('click', function(e){
+  e.preventDefault();
+
+  const loanValue = Number(inputLoanAmount.value);
+
+  if (loanValue > 0 && currentAccount.movements.some(mov => mov >= loanValue/10)){
+    // adding new load value to account movements
+    currentAccount.movements.push(loanValue);
+    // updating UI
+    updateUI(currentAccount);
+  };
+  // clearing input field values with or without the loan
+  inputLoanAmount.value = "";
+});
+
+
+
+// Event handler for close account 
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+
+  if (inputCloseUsername.value === currentAccount.username && Number(inputClosePin.value) === currentAccount.pin){
+    const index = accounts.findIndex(acc => acc.username === currentAccount.username);
+
+    // deleting message to the console
+    console.log(`Deleting ${accounts[index].owner.split(' ')[0]}'s account`);
+
+    // deleting the account using slice
+    accounts.splice(index, 1);
+
+    // hide UI and welcome message
+    labelWelcome.textContent = `Login again to get started...`;
+    containerApp.style.opacity = 0;
+  };
+
+  // clearing input fields for both right or wrong entries
+  inputClosePin.value = inputCloseUsername.value = "";
+
+});
 
 
 /////////////////////////////////////////////////
@@ -159,3 +265,19 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 // console.log(accounts);
 // const account =  accounts.find(acc => acc.owner === "Jessica Davis");
 // console.log(account);
+
+
+// using .flat()  method to calculate the overall movement of all the accounts in the bank
+const allMovements = accounts
+    .map(acc => acc.movements)
+    .flat()
+    .reduce((acc, mov) => acc + mov, 0);
+console.log(`Total movement of all accounts: ${allMovements}`);
+
+
+// using .flapMap() to combine .flat() and .map() methods
+// .flatMap() method has depth always set to 1
+const totalMovements = accounts
+    .flatMap(acc => acc.movements)
+    .reduce((acc, mov) => acc + mov, 0);
+console.log(`Total movement of all accounts: ${totalMovements}`); 

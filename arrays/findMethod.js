@@ -5,3 +5,7 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 console.log("First withdrawal:", movements.find(mov => mov < 0));    // returns the first element that satisfies this condition  
 console.log("Check find with no condition", movements.find(mov => mov === 100));    // will return undefined
 movements.find(mov => mov === 200)? console.log("Yeah 200 is an element in this array") : console.log("Pussyo fam");
+
+
+// .findIndex() method
+// same as .find() method but returns the index instead of the value that satisfies the boolean condition
