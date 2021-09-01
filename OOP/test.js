@@ -31,3 +31,14 @@ const newStudent = new Student('yella', 1995, "CS");
 console.log(newStudent);
 console.log(newStudent.fullName);
 console.log(newStudent.age);
+
+class Person2 {
+    constructor(fullName, birthYear){
+        this.fullName = fullName;
+        this.birthYear = birthYear;
+    }
+}
+
+const person2 = new Person2("Person2", 1000)   ;
+console.log(person2);
+console.log(person2.fullName);

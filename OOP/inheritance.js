@@ -154,3 +154,82 @@ clsStudent.introduce();
 console.log(clsStudent.age);
 
 console.log(clsStudent instanceof(PersonCl));
+
+
+// another class example
+class Account {
+
+    // public fields (the same as properties)
+    owner;
+    locale = navigator.language;
+    currency;
+
+    // private fields
+    #pin;
+    #movements = [];
+
+    constructor(owner, currency, pin){
+        this.owner = owner;
+        this.currency = currency;
+        this.pin = pin;
+
+        console.log(`New account opened on the name ${this.owner}, locale: ${this.locale}`);
+    }
+
+    // Public interface of our objects
+    deposit(value){
+        this.#movements.push(value);
+        return this;
+    }
+
+    withdrawal(value){
+        this.deposit(-value);
+        return this;
+    }
+
+    get balance(){
+        return this.#movements.reduce((acc, val) => acc + val, 0);
+    }
+
+    requestLoan(value){
+        if (this.#approveLoan()) {
+            this.deposit(value);
+            console.log(`Loan of ${value} approved`);
+            return this;
+        }
+        else console.log("Loan not approved");
+    }
+
+
+    // Private methods
+    #approveLoan(value){
+        return true;
+    }
+
+
+    // check names
+    set owner(newName){
+        if(newName.includes(' ')) this._owner = newName;
+        else alert("Account user unidentified");
+    }
+
+    get owner(){
+        return this._owner;
+    }
+};
+
+const acc1 = new Account("Yella Ravi Teja", "RUPEES", 1111);
+console.log(acc1);
+// acc1.movements.push(200);
+// acc1.movements.push(-100);
+acc1.deposit(2330);
+acc1.withdrawal(103);
+console.log(acc1.balance);
+console.log(acc1.owner);
+acc1.owner = "New Owner";
+console.log(acc1.owner);
+
+acc1.requestLoan(1000);
+console.log(acc1.balance);
+acc1.requestLoan(1000)
+console.log(acc1.balance);
