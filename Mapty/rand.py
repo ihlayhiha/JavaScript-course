@@ -6,5 +6,5 @@ class RandClass:
 
 
 rand = RandClass()
-print(rand)
+print(rand, end=" ")
 print(rand.rand)
