@@ -31,3 +31,7 @@ document.querySelector('img').addEventListener('load', function(){
 
 
 imageTimeout(10000).then(()=> console.log("This is being printed after 10 seconds"));
+
+
+
+// same challenge using async await
