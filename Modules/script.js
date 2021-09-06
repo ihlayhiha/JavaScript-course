@@ -3,7 +3,9 @@ import './shoppingCart.js';     // Is executed before any code in the rest of th
 import { addToCart, totalPrice, totalQuantity, randName as myName, tax } from './shoppingCart.js';
 import * as ShoppingCart from './shoppingCart.js';  // importing whole module as a module object
 import add, { cart } from './shoppingCart.js';        // how to import default exports
-import cloneDeep from './node_modules/lodash-es/cloneDeep.js';
+// import cloneDeep from './node_modules/lodash-es/cloneDeep.js';
+import cloneDeep from 'lodash-es';     // when we use Parcel, it'll automatically finds the path to the module and import it like before
+// Parcel will automatically install the package as well if the import package isn't installed before
 
 console.log("Importing module");
 
@@ -43,6 +45,11 @@ const stateDeepClone = cloneDeep(state);
 
 state.user.loggedIn = false;
 
-console.log(stateClone.user.loggedIn);
-console.log(stateDeepClone.user.loggedIn);
+console.log(state);
+console.log(stateDeepClone);
 
+// hot module replacement
+// whenever we change one module, the new modified module gets injected into the browser without reloading the whole webpage
+if (module.hot){
+    module.hot.accept();
+};  // mostly used for production phase when we don't need reloads and logins every time

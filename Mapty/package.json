@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "parcel": "^2.0.0-rc.0"
+  },
+  "name": "mapty",
+  "version": "1.0.0",
+  "description": "Mapty project",
+  "main": "script.js",
+  "devDependencies": {
+    "@parcel/transformer-image": "^2.0.0-rc.0"
+  },
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "author": "Yella",
+  "license": "ISC"
+}
