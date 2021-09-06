@@ -53,3 +53,6 @@ console.log(stateDeepClone);
 if (module.hot){
     module.hot.accept();
 };  // mostly used for production phase when we don't need reloads and logins every time
+
+
+console.log("This is a new branch, checking out branches using git");
